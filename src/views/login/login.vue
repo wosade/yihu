@@ -110,12 +110,9 @@ const loginref=ref()
           passWord:form.passWord
         }).then((data)=>{
           if(data.data.message!=='success')return
-          console.log(data);
           localStorage.setItem('token',data.data.data.token)
           localStorage.setItem('userInfo',JSON.stringify(data.data.data.userInfo))
           // 登录成功后跳转到主页面
-          console.log(1);
-
           router.push('/')
         })
       }

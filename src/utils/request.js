@@ -1,7 +1,7 @@
 import axios from "axios";
  const request = axios.create({
    baseURL: 'https://v3pz.itndedu.com/v3pz',
-  timeout: 1000,
+  timeout: 200000000,
 });
 // 添加请求拦截器
 request.interceptors.request.use(function (config) {
@@ -11,13 +11,9 @@ request.interceptors.request.use(function (config) {
   //不需要请求token的地址
   const white = ['/get/code', '/user/authentication','/login']
   // 预处理token
-  console.log(localStorage.getItem('token'));
-  console.log(token);
 if(token&&!white.includes[config.url])
   {
     config.headers['x-token']=token}
-    console.log(config);
-
   return config;
 }, function (error) {
   // 对请求错误做些什么

@@ -2,6 +2,7 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import App from "./App.vue";
+import PanelHead from "./components/PanelHead.vue";
 import router from "./router";
 import '@/assets/common.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'

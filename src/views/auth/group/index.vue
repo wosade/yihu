@@ -1,17 +1,33 @@
 <script setup>
-import { nextTick, reactive, ref } from 'vue'
-import { getsetmenu, setmenu, getlist } from '@/api/index'
+import { nextTick, onMounted, reactive, ref } from 'vue'
+import { getsetmenu, setmenu, getlist,getselectlist } from '@/api/index'
+import PanelHead from '@/components/PanelHead.vue'
 defineOptions({
   name: 'GroupPart'
 })
+onMounted(()=>{
+  getlistdata()
+  getselectlist().then(({data})=>{
+    console.log(data.data,1);
+    selectlist.value=data.data
+  })
+})
+const selectlist=ref([])
+// 通过id 匹配返回的数组
+const findselectlist=(id)=>{
+const data=selectlist.find(item=>item.id===id)
+return data? data:''
+}
 // 获取权限列表
 getsetmenu().then(
   ({ data }) => {
     form.permissions = data.data
   }
 )
+// 权限页面的页数和当前页面的数量
 const listpage=reactive({
-
+  pageNum: 3,
+  pageSize: 1
 })
 // 权限表单的默认勾选
 const checkbox = [4, 5]
@@ -47,7 +63,6 @@ const submitForm = async (formEl) => {
       const permissions = JSON.stringify(treeref.value.getCheckedKeys())
       // 设置权限
       setmenu({ name: form.name, permissions, id: form.id }).then(({ data }) => {
-        console.log(data);
         // 得到权限列表
 
       }
@@ -58,43 +73,44 @@ const submitForm = async (formEl) => {
   )
 }
 
-
 // 打开下面的数据弹窗
 const open = (data = {}) => {
   dialogtype.value = true
-  console.log(data);
-  console.log(treeref.value);
 
   // 由于弹窗打开form是异步的因此 使用nexttick在还没打开弹窗时操控里面的数据
   nextTick(() => {
     if (data) {
-      console.log(1);
-
-      // 将一个对象里面的值传给另一个对象 但是不改变对象 改变弹窗表单的内容
+      //改变弹窗表单的内容 将一个对象里面的值传给另一个对象 但是不改变对象
       Object.assign(form, { id: data.id, name: data.name })
-      console.log(data.permission);
-
       treeref.value.setCheckedKeys(data.permission)
-      console.log(form);
-
     }
   })
 }
+
 // 得到 列表数据
 const getlistdata = () => {
-  getlist({ pageNum: 1, pageSize: 10 }).then(
+  getlist(listpage).then(
     ({ data }) => {
-      console.log(data);
       const { list, total } = data.data
       listitem.list = list
       listitem.total = total
-      console.log(list, total);
     })
+    dialogtype.value=false
+}
+// 点击翻页后能显示当前页面的数据
+const handleSizeChange=(val)=>{
+  listpage.pageNum=val
+  // getlistdata()
+}
+const handleCurrentChange=(val)=>{
+  listpage.pageNum=val
+  getlistdata()
 }
 </script>
 <template>
+  <PanelHead></PanelHead>
   <!-- 没有数据传入则直接打开 -->
-  <el-button @click="open(null)">打开</el-button>
+  <el-button @click="open(null)" type="primary">+新建</el-button>
   <el-table :data="listitem.list">
     <el-table-column prop="id" label="id">
     </el-table-column>
@@ -102,15 +118,21 @@ const getlistdata = () => {
     </el-table-column>
     <el-table-column prop="permissionName" label="permissions">
     </el-table-column>
-    <el-table-column>
-      <!-- 自定义表格中的内容 -->
+    <el-table-column >
+      <!-- 自定义每一列的按钮 -->
       <template #default="scope">
         <!-- 拿到当前行的数据 并通过弹窗打开 -->
+         <div class="editbutton">
         <el-button type="primary" @click="open(scope.row)">编辑
-        </el-button>
+        </el-button></div>
       </template>
     </el-table-column>
   </el-table>
+  <div class="demo-pagination-block">
+    <div class="demonstration"></div>
+    <el-pagination v-model:current-page="listpage.pageNum" v-model:page-size="listpage.pageSize"
+      :background="false" layout="prev, pager, next, jumper" :total="listitem.total" @size-change="handleSizeChange" @current-change="handleCurrentChange"  class="fanye"/>
+  </div>
   <!-- 弹窗内容 -->
   <el-dialog v-model="dialogtype" :before-close="beforeclose">
     <!-- ref表示表单的实例对象 form表单的数据-->
@@ -121,16 +143,25 @@ const getlistdata = () => {
 
         </el-input>
       </el-form-item>
-      <el-form-item label="名称" prop="name">
+      <el-form-item label="名称" prop="name" >
         <el-input v-model="form.name" placeholder="请输入权限名称"></el-input>
       </el-form-item>
-      <el-form-item label="权限" prop="permissions">
+      <el-form-item label="权限" prop="permissions" class="quanxian">
         <!--ref 拿到tree的组件实例tree为弹窗里面的多选框  -->
         <el-tree ref="treeref" :data="form.permissions" show-checkbox node-key="id" :default-checked-keys="checkbox">
         </el-tree>
       </el-form-item>
-      <el-button @click="submitForm(formref)"></el-button>
+      <el-button @click="submitForm(formref)">提交</el-button>
     </el-form>
   </el-dialog>
 </template>
-<style scoped></style>
+<style scoped lang="less">
+:deep(.fanye){
+  background-color: #fff;
+  justify-content: flex-end;
+}
+.editbutton{
+  margin-left: 100px;
+}
+
+</style>

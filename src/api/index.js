@@ -16,3 +16,23 @@ export const login=(data)=>{
 export const manageuser=(params)=>{
   return request.get('/auth/admin',{params})
 }
+// 获取权限数据
+export const getsetmenu=(params)=>{
+  return request.get('/user/getmenu',{params})
+}
+// 修改权限
+export const setmenu=(data)=>{
+  return request.post('/user/setmenu',data)
+}
+// 获取权限列表
+export const getlist=(params)=>{
+  return request.get('/menu/list',{params})
+}
+// 获取权限下拉列表
+export const getselectlist=(params)=>{
+  return request.get('/menu/selectlist',{params})
+}
+// 用户信息修改
+export const updatauser=(data)=>{
+  return request.post('/update/user',data)
+}

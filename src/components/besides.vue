@@ -17,7 +17,7 @@ const routedata=reactive(router.options.routes[0].children)
 <template>
   <!-- 判断边框是否折叠改变边框的宽度 -->
         <el-menu :style="{width: iscollapse? '64px':'230px',}" active-text-color="#ffd04b" background-color="#545c64" class="el-menu-vertical-demo" default-active="2"
-          text-color="#fff" @open="handleOpen" @close="handleClose" :collapse="iscollapse">
+          text-color="#fff" :collapse="iscollapse">
           <p class="log">{{ iscollapse?'陪诊':'陪诊管理' }}</p>
           <Besidestiem :index=1 :routedata="routedata"></Besidestiem>
         </el-menu>
