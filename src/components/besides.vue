@@ -8,9 +8,12 @@ const router=useRouter();
 const usecounterstore=useCounterStore()
 // 判断侧边栏是否展开
 const iscollapse=computed(()=>usecounterstore.isCollapse)
-
+const usecount=useCounterStore()
 /* 拿到路由中的全部路径*/
-const routedata=reactive(router.options.routes[0].children)
+// const routedata=reactive(router.options.routes[0].children)
+// 此时拿到的是store里面的动态路由只会渲染 用户拥有的权限
+const routedata=usecount.routerList
+console.log(routedata);
 
 </script>
 
