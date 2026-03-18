@@ -36,3 +36,7 @@ export const getselectlist=(params)=>{
 export const updatauser=(data)=>{
   return request.post('/update/user',data)
 }
+// 用户菜单权限
+export const menupermissons=(params)=>{
+  return request.get('/menu/permissions',{params})
+}

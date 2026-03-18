@@ -7,7 +7,8 @@ const route = useRoute()
 const router = useRouter()
 const usercounterstore = useCounterStore()
 const { addmenu, delmenu } = usercounterstore
-const menudata = computed(() => { return usercounterstore.menudata })
+const menudata = computed(() => {
+  return usercounterstore.menudata })
 const closetab = (item, index) => {
   delmenu(item, index)
   console.log(menudata);
@@ -27,14 +28,10 @@ const closetab = (item, index) => {
   // 如果删的是最后一个则往前一个
   else if (index === menu.length) {
     router.push(menu[index - 1].path)
-    console.log(1);
-
   }
   //如果删的是中间的一个 则往后去一个
   else {
     router.push(menu[index].path)
-    console.log(2);
-
   }
 }
 const handleclik=(command)=>{
@@ -42,7 +39,8 @@ const handleclik=(command)=>{
   if(command==='cancel'){
   localStorage.removeItem('token')
   localStorage.removeItem('userInfo')
-  router.push('/')}
+  localStorage.removeItem('data')
+  router.push('/login')}
 }
 </script>
 

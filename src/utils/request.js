@@ -32,6 +32,7 @@ request.interceptors.response.use(function (response) {
   if(response.data.code===-2){
     localStorage.removeItem('token')
     localStorage.removeItem('userInfo')
+    localStorage.removeItem('data')
     // 让浏览器进行一次跳转 由于没有token会直接跳到login
     window.location.href=window.location.origin
   }

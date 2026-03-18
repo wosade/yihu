@@ -1,11 +1,14 @@
 <script setup>
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref,toRaw} from 'vue';
 import { User, Lock } from '@element-plus/icons-vue'
-import {getcode, signuser,login } from '@/api/index'
+import {getcode, signuser,login,getlist, getsetmenu,menupermissons} from '@/api/index'
 import { useRouter } from 'vue-router';
+import { useCounterStore } from '@/stores/counter';
  defineOptions({ name: 'LoginView' })
  //让图片打包 生产环境任能显示
  const imgurl=new URL('../../../public/login-head.png', import.meta.url).href
+ const usecount=useCounterStore()
+ usecount.dynamicmenu()
  const router=useRouter()
  const type=ref(1)
  //表示 登录和注册的切换
@@ -102,18 +105,29 @@ const loginref=ref()
           console.log(1);
         }
       }})
+
     }
       // 如果是登录页面
       else{
-        login({
-          userName:form.userName,
-          passWord:form.passWord
-        }).then((data)=>{
+        login(form).then((data)=>{
           if(data.data.message!=='success')return
           localStorage.setItem('token',data.data.data.token)
           localStorage.setItem('userInfo',JSON.stringify(data.data.data.userInfo))
-          // 登录成功后跳转到主页面
-          router.push('/')
+
+          // 从后台获取 用户权限列表
+          menupermissons().then(({data})=>{
+            usecount.dynamicmenu(data.data)
+            console.log(routerList);
+
+            routerList.value.forEach(item=>{
+              // 将动态路由添加到 main 组件下 每个用户看到的路由不一样
+              router.addRoute('main',item)
+              console.log(router);
+            })
+            // 登录成功后跳转到主页面
+
+            router.push('/')
+          })
         })
       }
       console.log('submit!','valiid',valid,'fields',fields)
@@ -122,6 +136,11 @@ const loginref=ref()
     }
   })
 }
+// 动态路由列表
+const routerList=computed(()=>{
+  return usecount.routerList
+})
+
 </script>
 
 <template>

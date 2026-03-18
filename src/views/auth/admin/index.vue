@@ -6,10 +6,13 @@ import { manageuser,getlist,getselectlist,updatauser} from '@/api/index'
 import { nextTick, onMounted, reactive } from 'vue';
 import {ref} from 'vue'
 import dayjs, { Dayjs } from 'dayjs';
+import { useRoute } from 'vue-router';
+import PanelHead from '@/components/PanelHead.vue';
 onMounted(()=>{
   getlistdata()
   permissiondata()
 })
+const route=useRoute()
 const form=reactive({
   name:'',
   permissions_id:0
@@ -36,7 +39,7 @@ const beforeclose = () => {
 const  dialogtype=ref(false)
 // 权限管理菜单 有啥权限
 const permission=ref([])
-
+// 得到用户的权限管理
 const getlistdata = () => {
   manageuser(admin).then(
     ({ data }) => {
@@ -106,10 +109,8 @@ const submitForm = async (formEl) => {
 }
 </script>
 <template>
-  <div class="admin">
-    <h1>管理员页面</h1>
-    <p>欢迎来到管理员页面！这里是管理员专用的内容。</p>
-  </div>
+  <!-- 将当前组件路由传递过去 由于路由中包含当前页面的mate信息因此能实现自定义当前页面的头部简介显示-->
+    <panel-head :route="route"></panel-head>
   <el-table :data="listitem.list" :rules="rules">
     <el-table-column prop="id" label="id">
     </el-table-column>

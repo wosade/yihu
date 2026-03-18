@@ -2,6 +2,7 @@
 import { nextTick, onMounted, reactive, ref } from 'vue'
 import { getsetmenu, setmenu, getlist,getselectlist } from '@/api/index'
 import PanelHead from '@/components/PanelHead.vue'
+import { useRoute } from 'vue-router'
 defineOptions({
   name: 'GroupPart'
 })
@@ -106,9 +107,10 @@ const handleCurrentChange=(val)=>{
   listpage.pageNum=val
   getlistdata()
 }
+const route=useRoute()
 </script>
 <template>
-  <PanelHead></PanelHead>
+  <PanelHead :route="route"></PanelHead>
   <!-- 没有数据传入则直接打开 -->
   <el-button @click="open(null)" type="primary">+新建</el-button>
   <el-table :data="listitem.list">
