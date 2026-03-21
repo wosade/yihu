@@ -56,3 +56,6 @@ export const getcompanionlist=(params)=>{
 export const deletecompanion=(data)=>{
   return request.post('/delete/companion',data)
 }
+export const adminOrder = (params) => {
+  return request.get('/admin/order', {params})
+}

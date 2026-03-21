@@ -6,7 +6,6 @@ import Admin from '@/views/auth/admin/index.vue'
 import Group from '@/views/auth/group/index.vue'
 import Staff from '@/views/vppz/staff/index.vue'
 import Order from '@/views/vppz/order/index.vue'
-const data=JSON.stringify(localStorage.getItem('data'))
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -15,12 +14,13 @@ const router = createRouter({
       component: Layout,
       // 让 ‘/’路径 重定向为 侧边栏的第一个路由
       redirect:to=>{
+        if(!localStorage.getItem('data'))return '/login'
         const data=JSON.parse(localStorage.getItem('data'))
         if(data){
           if(data.routerList)
         return  data.routerList[0].children ? data.routerList[0].children[0].meta.path : data.routerList[0].meta.path}
         else{
-          return '/'
+          return '/login'
         }
       },
       name: 'main',}

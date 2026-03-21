@@ -33,7 +33,6 @@ const form=reactive(
 // 获取陪护师列表信息
 onMounted(async () => {
   const res = await api.getcompanion()
-  console.log(res.data);
   Object.assign(companion, res.data.data)
 })
 // 就诊医院弹窗是否显示
@@ -48,18 +47,15 @@ const confirmhospital=(item)=>{
 form.hospital_name=item.selectedOptions[0].text
 form.hospital_id=item.selectedOptions[0].value
 showhhospital.value=false
-console.log(form);
 }
 // 选择 提交时间
 const showdata=ref(false)
 const date=ref('')
 const confirmdata=(item)=>{
-  console.log(item);
   // 拼接日期
   const datastr=item.selectedValues.join('-')
   date.value=datastr
   form.starttime=new Date(datastr).getTime()
-  console.log(form);
   showdata.value=false
 }
 const minDate=computed(()=>{
@@ -82,8 +78,6 @@ const permisonlist=computed(()=>{
 })
 const perimisonname=ref('')
 const confirmpeimisson=(item)=>{
-  console.log(item);
-  console.log(perimisonname.value);
   form.companion_id=item.selectedOptions[0].value
   perimisonname.value=item.selectedOptions[0].text
   showpermison.value=false
@@ -99,8 +93,6 @@ const placelist = computed(() => {
 })
 const showplace = ref('')
 const confirmplace = (item) => {
-  console.log(item);
-  console.log(perimisonname.value);
   form.companion_id = item.selectedOptions[0].value
   perimisonname.value = item.selectedOptions[0].text
   showdata.value = false
@@ -116,7 +108,6 @@ const submitform=async ()=>{
   }
  }
  const res= await api.postcreateorder(form) 
- console.log(res);
 //  通过qrcode插件让后端返回的wechat支付路径变成 图片
  payimg.value=Qrcode.toDataURL(res.data.data.wx_code).then((url)=>{
   payimg.value=url

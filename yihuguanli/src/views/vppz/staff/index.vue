@@ -5,6 +5,7 @@ import { computed, nextTick, onMounted, reactive, ref } from 'vue'
 import { getphotolist,companion,getcompanionlist, deletecompanion } from '@/api'
 import { ElMessage } from 'element-plus'
 import { InfoFilled,Delete} from '@element-plus/icons-vue'
+import { useRoute } from 'vue-router'
 defineOptions({
   name: 'VppzStaff'
 })
@@ -20,13 +21,12 @@ const listpage=reactive({
   pageNum:1,
   pageSize:2
 })
-const companionlist=ref([])
+const companionlist=reactive({})
 const getlist=()=>{
   getcompanionlist(listpage).then(
     ({data})=>{
-      companionlist.value=data.data
-      console.log(companionlist.value);
-
+      companionlist.list=data.data.list
+      companionlist.total=data.data.total
     }
   )
 }
@@ -47,8 +47,6 @@ const submitForm = async (formEl) => {
   await formEl.validate((valid, fields) => {
     // 如果二次校验合规
     if (valid) {
-
-
       companion(form).then(
         ({data})=>{
           if(data.code===10000){
@@ -89,7 +87,7 @@ const submitimg=()=>{
 }
 // 翻页函数
 const handleSizeChange = (val) => {
-  listpage.pageNum = val
+  listpage.pageSize = val
   getlist()
 }
 const handleCurrentChange = (val) => {
@@ -129,11 +127,13 @@ const confirm=()=>{
     }
   })
 }
+const route=useRoute()
 </script>
 <template>
+  <PanelHead :route="route"></PanelHead>
   <div class="header">
   <el-button type="primary" @click="dialogtype = true" back>新增+</el-button>
-    <el-popconfirm width="220" :icon="Delete" icon-color="#626AEF" title="Are you sure to delete this?"
+    <el-popconfirm width="220" :icon="Delete" icon-color="#626AEF" title="你确定要删除这些吗?"
     confirm-button-text="是"
     cancel-button-text="否"
       @confirm="confirm">
@@ -176,12 +176,13 @@ const confirm=()=>{
     </el-table-column>
   </el-table>
   <!-- 分页逻辑 -->
-  <div class="demo-pagination-block">
-    <div class="demonstration"></div>
-    <el-pagination v-model:current-page="listpage.pageNum" v-model:page-size="listpage.pageSize" :background="false"
-      layout="prev, pager, next, jumper" :total="companionlist.total" @size-change="handleSizeChange"
-      @current-change="handleCurrentChange" class="fanye" />
-  </div>
+    <div class="demo-pagination-block">
+      <div class="demonstration"></div>
+      <el-pagination v-model:current-page="listpage.pageNum" v-model:page-size="listpage.pageSize" :background="false"
+        layout="prev,pager, next, jumper" :total="companionlist.total" @size-change="handleSizeChange"
+        @current-change="handleCurrentChange" class="fanye" />
+    </div>
+
   <!-- 弹窗部分 -->
   <el-dialog v-model="dialogtype" :before-close="beforeclose">
     <el-form ref="formref" :model="form" :rules="rules">

@@ -11,7 +11,6 @@ defineOptions({
 onMounted(async () => {
   const res = await api.orderdetail({ oid: route.query.oid })
   Object.assign(detaildata, res.data.data)
-  console.log(detaildata);
   // 拿到支付图片路径
   payimg.value = Qrcode.toDataURL(res.data.data.code_url).then((url) => {
     payimg.value = url
@@ -87,8 +86,7 @@ function formatTimestamp(timestamp) {
 </script>
 <template>
   <div class="container">
-    <van-icon @click="goback" name="arrow-left" class="header-left"></van-icon>
-    请填写订单信息
+     <div class="arrow-left"><van-icon @click="goback" name="arrow-left"></van-icon></div>
     <StatusBar :item="stateMap[detaildata.trade_state]">
       <div class="tips">
         <!-- 订单状态显示 -->
@@ -148,15 +146,10 @@ function formatTimestamp(timestamp) {
 
 }
 }
-.header {
-  background-color: #fff;
-  line-height: 40px;
-  text-align: center;
-
-  .header-left {
-    float: left;
+  .arrow-left {
+    padding-top: 10px;
+    height: 20px;
   }
-}
 
 .kjk {
   position: absolute;

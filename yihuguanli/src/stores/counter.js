@@ -15,14 +15,11 @@ export const useCounterStore = defineStore('counter', () => {
   const menuactive=ref('1-1')
   function Changecollapse() {
     isCollapse.value=!isCollapse.value
-    console.log(isCollapse.value);
   }
   // 判断页面是否打开 未打开则添加到menudata中
   function addmenu(pay){
      if(menudata.value.findIndex(item=>item.path===pay.path)===-1)
       menudata.value.push(pay)
-    console.log(menudata.value);
-
   }
   // 删除顶部菜单里面的导航所选项
    function delmenu(item,index){
@@ -30,16 +27,13 @@ export const useCounterStore = defineStore('counter', () => {
     menudata.value=menudata.value.filter((value)=>{
       return value!==item
     })
-    console.log(item,menudata.value.length);
-
   }
-  const getrouter=reactive(router.options.routes[0].children)
+  const getrouter=ref(router.options.routes[0].children)
 
   function dynamicmenu(payload){
 
     // 通过vite自带的glob导入文件能够批量得到veiws中的文件的路径
     const modules=import.meta.glob('../views/**/**/*.vue')
-    console.log(modules);
     routerList.value=payload
     // 把后台传过来的菜单权限列表数组 与views中的组件 进行匹配赋值
     function routerset(router){
@@ -59,8 +53,6 @@ export const useCounterStore = defineStore('counter', () => {
       routerset(payload)
       // 拿到完整的路由数据
       routerList.value=payload
-      console.log(routerList);
-
   }
   // 改变侧边栏的默认高亮 当刷新后还能 让其为选中
   function updatamenuactive(payload){

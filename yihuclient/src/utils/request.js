@@ -35,7 +35,7 @@ request.interceptors.response.use(function (response) {
     localStorage.removeItem('token')
     localStorage.removeItem('userInfo')
     // 让浏览器进行一次跳转 由于没有token会直接跳到login
-    window.location.href = window.location.origin
+    // window.location.href = window.location.origin
   }
   return response;
 }, function (error) {

@@ -3,24 +3,49 @@ defineOptions({
   name: 'OrderPage'
 })
 import api from '@/api';
-import { onMounted, reactive ,ref} from 'vue';
+import { computed, onMounted, reactive ,ref} from 'vue';
 import counter from '@/components/counter.vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import Qrcode from 'qrcode'
+import { watch } from 'vue';
 const router=useRouter()
+const route=useRoute()
 // 订单页面详情 传递订单id
 const godetail=(item)=>{
   router.push(`/detail?oid=${item.out_trade_no}`)
 }
 onMounted(
-  ()=>{
-    getorderlist()
+  async()=>{
+    await getorderlist()
+    if(route.query.name){
+      changename({ name: route.query.name })
+      active.value=route.query.name
+    }
   }
 )
-// 订单的参数
-const  order=reactive({
 
-})
+// 订单的参数
+const  order=ref([])
+const orderlist=ref([])
+console.log();
+const changename=(item)=>{
+  if (item.name === '1') {
+    orderlist.value=order.value
+    return
+  }
+  orderlist.value=order.value.filter(p => {
+    return statemap[p.trade_state] === item.name
+  })
+}
+// 记录顶栏的位置
+const active=ref(1)
+const statemap={
+  '全部':'1',
+  '待支付':'2',
+  '待服务':'3',
+  '已完成':'4',
+  '已取消':'5'
+}
 // 不同的状态对应不同的颜色
 const colormap={
   '待支付':'#ffa200',
@@ -28,40 +53,30 @@ const colormap={
   '已完成':'#21c521'
 }
 // 得到商业订单
+const oderarr=[]
 const getorderlist=async(state)=>{
   const res=await api.orderlist({state})
-  console.log(res.data.data);
   res.data.data.forEach(
     item=>{
       // 当前剩余支付时间
       item.timer=item.order_start_time+7200000-Date.now()
     }
   )
- Object.assign(order,res.data.data)
+ order.value=res.data.data
+ orderlist.value=order.value
   }
-  // 支付功能
-const payshow = ref(false)
-const payimg = ref('')
-  //  通过qrcode插件让后端返回的wechat支付路径变成 图片
- payimg.value = Qrcode.toDataURL(order.wx_code).then((url) => {
-  payimg.value = url
-  payshow.value = true
-})
-
-
 </script>
 <template>
   <div class="container">
     <div class="header">我的订单</div>
-    <van-tabs v-model:active="active">
-      
-      <van-tab title="全部" name="1"></van-tab>
-      <van-tab title="待支付" name="2"></van-tab>
+    <van-tabs @click-tab="changename" v-model:active="active">
+      <van-tab title="全部" name="1" ></van-tab>
+      <van-tab title="待支付" name="2" ></van-tab>
       <van-tab title="待服务" name="3"></van-tab>
       <van-tab title="已完成" name="4"></van-tab>
       <van-tab title="已取消" name="5"></van-tab>
     </van-tabs>
-    <van-row @click="godetail(item)" v-for="item in order" :key="item.out_trade_no" >
+    <van-row @click="godetail(item)" v-for="item in orderlist" :key="item.out_trade_no" >
       <van-col span="5">
         <van-image :src="item.serviceImg" height="75px"></van-image>
       </van-col>

@@ -2,10 +2,8 @@
 import { defineProps } from 'vue';
 // 接受其他组件传过来的路由页面的数据
 const prop=defineProps({
-  route:String
+  route:Object
 })
-console.log(prop.route.meta);
-
 </script>
 <template>
   <div class="panel-heading">

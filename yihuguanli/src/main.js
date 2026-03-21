@@ -15,9 +15,6 @@ router.beforeEach((to,from)=>{
   if(!token&&to.path!='/login'){
     return '/login'
   }
-  else if(to.path==='/login'&&token){
-    return '/'
-  }
   else{
    return true
   }

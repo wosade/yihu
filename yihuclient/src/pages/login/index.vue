@@ -12,7 +12,6 @@ const form=reactive({
 const router=useRouter()
 const submit =async()=>{
   const res=await proxy.$api.login(form)
-  console.log(res.data);
   const data=res.data
   localStorage.setItem('token',data.data.token)
   localStorage.setItem('userInfo',JSON.stringify(data.data.userInfo))
@@ -25,7 +24,7 @@ const submit =async()=>{
       登录
     </h1>
   
-  <van-form @submit="onSubmit">
+  <van-form>
     <van-cell-group inset>
       <van-field v-model="form.userName" name="用户名" label="用户名" placeholder="请输入用户名用户名"
         :rules="[{ required: true, message: '请填写用户名' }]" />

@@ -12,19 +12,15 @@ const mydata=reactive({
   slides:[],
 })
 onMounted(async ()=>{
-
 const res = await api.gethome()
-console.log(res.data);
 Object.assign(mydata,res.data.data)
-console.log('data',mydata);
-
 })
 const router=useRouter()
 // 点击医院列表进行跳转
 const goOrder=(data)=>{
   router.push(`/createOrder?id=${data.id}`)
 }
-const searchValue=ref(0)
+const searchValue=ref()
 </script>
 <template>
   <div class="header">
@@ -32,19 +28,19 @@ const searchValue=ref(0)
       中部地区
       <van-icon name="arrow"></van-icon>
     </div>
-    <van-search v-model="searchValue" show-action shape="round" placholder="请输入搜索内容"></van-search>
+    <van-search v-model="searchValue" show-action shape="round" placeholder="请输入搜索内容"></van-search>
   </div>
   <van-swipe class="my-swiper" :autoplay="3000" indicator-color="white">
     <van-swipe-item v-for="(item,index) in mydata.slides" :key="index">
       <van-image  :src="item.pic_image_url" radius="5px" />
     </van-swipe-item>
   </van-swipe>
-  <!-- 快捷跳转 -->
+  <!-- 快捷跳转
   <van-row justify="space-around">
     <van-col v-for="item in mydata.nav2s" span="11">
       <van-image  radius="5px" :src="item.pic_image_url"></van-image>
     </van-col>
-  </van-row>
+  </van-row> -->
   <!-- 医院列表显示 -->
   <van-row class="yy-list" v-for="item in mydata.hospitals" justify="space-around" @click="goOrder(item)">
   <van-col  span="6">

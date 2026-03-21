@@ -3,7 +3,7 @@
   </template>
   <!-- 倒计时组件 -->
   <script setup>
-  import { ref, onMounted, defineProps, defineEmits, watch } from "vue";
+  import { ref, onMounted, defineProps, defineEmits, watch ,reactive} from "vue";
   const props = defineProps({
     second: {
       type: Number,

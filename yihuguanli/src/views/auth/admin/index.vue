@@ -43,13 +43,9 @@ const permission=ref([])
 const getlistdata = () => {
   manageuser(admin).then(
     ({ data }) => {
-      console.log(data);
-
       listitem.list= data.data.list
       listitem.total=data.data.total
       // 将时间戳转换为时间
-      console.log(listitem);
-
       listitem.list.forEach((item)=>{
         item.create_time=dayjs(item.create_time).format('YYYY-MM-DD')
       })
@@ -62,8 +58,6 @@ const permissiondata=()=>{
   getselectlist().then(
     ({data})=>{
       permission.value=data.data
-      console.log(permission.value);
-
       })
     }
 // 得到 当前用户所拥有的权限
@@ -78,8 +72,6 @@ const open = (data = {}) => {
   nextTick(() => {
     if (data) {
       //改变弹窗表单的内容 将一个对象里面的值传给另一个对象 但是不改变对象
-      console.log(data);
-
       Object.assign(form, {mobile: data.mobile,
         name: data.name,
         permissions_id: data.permissions_id})
@@ -89,14 +81,11 @@ const open = (data = {}) => {
 // 修改权限
 const submitForm = async (formEl) => {
   if (!formEl) return
-  await formEl.validate((valid, fields) => {
+  await formEl.validate(async(valid, fields) => {
     // 如果二次校验合规
     if (valid) {
-     updatauser(form).then(
+      await updatauser(form).then(
       ({data})=>{
-        console.log(form,form);
-        console.log(data);
-
       }
      )
      getlistdata()

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, reactive, ref, toRaw } from 'vue';
+import { computed, nextTick, reactive, ref, toRaw } from 'vue';
 import { User, Lock } from '@element-plus/icons-vue'
 import { getcode, signuser, login, getlist, getsetmenu, menupermissons } from '@/api/index'
 import { useRouter } from 'vue-router';
@@ -8,7 +8,6 @@ defineOptions({ name: 'LoginView' })
 //让图片打包 生产环境任能显示
 const imgurl = new URL('../../../public/login-head.png', import.meta.url).href
 const usecount = useCounterStore()
-usecount.dynamicmenu()
 const router = useRouter()
 const type = ref(1)
 //表示 登录和注册的切换
@@ -39,8 +38,6 @@ const countdownchange = () => {
   if (flag) return
   flag = 1
   getcode({ tel: form.userName }).then(({ data }) => {
-    console.log(data);
-
   })
   countdown.vaildText = countdown.count + '秒'
   const timer = setInterval(() => {
@@ -100,10 +97,8 @@ const submitForm = async (formEl) => {
       if (!type.value) {
         signuser(form).then(({ data }) => {
           {
-            console.log(data.message === 'success');
             if (data.message === 'success') {
               type.value = 1
-              console.log(1);
             }
           }
         })
@@ -115,20 +110,17 @@ const submitForm = async (formEl) => {
           if (data.data.message !== 'success') return
           localStorage.setItem('token', data.data.data.token)
           localStorage.setItem('userInfo', JSON.stringify(data.data.data.userInfo))
-
           // 从后台获取 用户权限列表
           menupermissons().then(({ data }) => {
             usecount.dynamicmenu(data.data)
-            console.log(routerList);
-
             routerList.value.forEach(item => {
               // 将动态路由添加到 main 组件下 每个用户看到的路由不一样
-              router.addRoute('main', item)
-              console.log(router);
+                router.addRoute('main', item)
             })
             // 登录成功后跳转到主页面
-
-            router.push('/')
+            nextTick(()=>{
+              router.push('/');
+            })
           })
         })
       }

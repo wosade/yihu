@@ -9,7 +9,6 @@ defineOptions({
 onMounted(()=>{
   getlistdata()
   getselectlist().then(({data})=>{
-    console.log(data.data,1);
     selectlist.value=data.data
   })
 })
@@ -58,12 +57,12 @@ const rules = reactive({
 })
 const submitForm = async (formEl) => {
   if (!formEl) return
-  await formEl.validate((valid, fields) => {
+  await formEl.validate(async(valid, fields) => {
     // 如果二次校验合规
     if (valid) {
       const permissions = JSON.stringify(treeref.value.getCheckedKeys())
       // 设置权限
-      setmenu({ name: form.name, permissions, id: form.id }).then(({ data }) => {
+      await setmenu({ name: form.name, permissions, id: form.id }).then(({ data }) => {
         // 得到权限列表
 
       }
