@@ -42,6 +42,9 @@ const handleclik=(command)=>{
   localStorage.removeItem('data')
   router.push('/login')}
 }
+// 得到用户信息
+const userinfo=JSON.parse(localStorage.getItem('userInfo'))
+
 </script>
 
 <template>
@@ -72,8 +75,8 @@ const handleclik=(command)=>{
       <!-- 当下拉栏被点击时触发 -->
       <el-dropdown @command="handleclik">
         <div class="flex-box" >
-          <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
-          <p class="user-name">user</p>
+          <el-avatar :src="userinfo.avatar" />
+          <p class="user-name">{{ userinfo.name }}</p>
         </div>
 
       <template #dropdown>

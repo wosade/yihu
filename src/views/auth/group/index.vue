@@ -130,6 +130,7 @@ const route=useRoute()
       </template>
     </el-table-column>
   </el-table>
+  <!-- 分页逻辑 -->
   <div class="demo-pagination-block">
     <div class="demonstration"></div>
     <el-pagination v-model:current-page="listpage.pageNum" v-model:page-size="listpage.pageSize"

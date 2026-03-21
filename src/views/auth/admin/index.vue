@@ -158,8 +158,12 @@ const submitForm = async (formEl) => {
           </el-option>
         </el-select>
       </el-form-item>
-      <el-button @click="submitForm(formref)">提交</el-button>
+
+
     </el-form>
+    <!-- 让按钮能固定在表单下面 -->
+    <template #footer>
+      <el-button @click="submitForm(formref)">提交</el-button></template>
   </el-dialog>
 </template>
 <style scoped>

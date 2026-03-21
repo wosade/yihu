@@ -12,6 +12,8 @@ const {addmenu}=usecount
 // 点击组件后会跳转到对应的页面 路由导航
 const handleroute=(item,index)=>{
   addmenu(item.meta)
+  // 点击后会传递当前组件的id 从而改变sotre里面的记录侧边栏高亮的id 让其为现在所点击的侧边栏 刷新后依然存在
+  usecount.updatamenuactive(index)
   router.push(item.meta.path)
 }
 </script>

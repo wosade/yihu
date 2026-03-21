@@ -4,12 +4,14 @@ import { defineProps } from 'vue';
 const prop=defineProps({
   route:String
 })
+console.log(prop.route.meta);
+
 </script>
 <template>
   <div class="panel-heading">
     <div class="panel-lead">
       <div class="title">{{ prop.route.meta.name }}
-        <p class="description">{{ prop.route.meta.description}}</p>
+        <p class="description" :style="{ fontSize: '12px' }">{{ prop.route.meta.describe}}</p>
       </div>
     </div>
   </div>

@@ -9,7 +9,10 @@ export const useCounterStore = defineStore('counter', () => {
   const isCollapse = ref(false)
   // 存储已打开的页面
   const menudata=ref([])
+  // 存储路由路径
   const routerList=ref([])
+  //
+  const menuactive=ref('1-1')
   function Changecollapse() {
     isCollapse.value=!isCollapse.value
     console.log(isCollapse.value);
@@ -59,7 +62,11 @@ export const useCounterStore = defineStore('counter', () => {
       console.log(routerList);
 
   }
-  return { isCollapse,Changecollapse,menudata,addmenu,delmenu,dynamicmenu,getrouter,routerList}
+  // 改变侧边栏的默认高亮 当刷新后还能 让其为选中
+  function updatamenuactive(payload){
+    menuactive.value=payload
+  }
+  return { isCollapse,Changecollapse,menudata,addmenu,delmenu,dynamicmenu,getrouter,routerList,menuactive,updatamenuactive}
 }, {
   persist: {
     key:'data',

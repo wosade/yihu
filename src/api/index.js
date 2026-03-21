@@ -40,3 +40,19 @@ export const updatauser=(data)=>{
 export const menupermissons=(params)=>{
   return request.get('/menu/permissions',{params})
 }
+// 陪护师头像
+export const getphotolist=(params)=>{
+  return request.get('/photo/list',{params})
+}
+// 创建陪护师
+export const companion=(data)=>{
+  return request.post('/companion',data)
+}
+// 得到陪护师列表
+export const getcompanionlist=(params)=>{
+  return request.get('/companion/list',{params})
+}
+// 删除陪护师
+export const deletecompanion=(data)=>{
+  return request.post('/delete/companion',data)
+}
