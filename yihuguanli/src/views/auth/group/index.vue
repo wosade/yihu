@@ -26,8 +26,8 @@ getsetmenu().then(
 )
 // 权限页面的页数和当前页面的数量
 const listpage=reactive({
-  pageNum: 3,
-  pageSize: 1
+  pageNum: 1,
+  pageSize: 5
 })
 // 权限表单的默认勾选
 const checkbox = [4, 5]

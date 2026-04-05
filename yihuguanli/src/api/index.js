@@ -59,3 +59,7 @@ export const deletecompanion=(data)=>{
 export const adminOrder = (params) => {
   return request.get('/admin/order', {params})
 }
+// 获取dashbord信息
+export const getdashbord=(params)=>{
+  return request.get('/report',{params})
+}

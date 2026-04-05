@@ -42,7 +42,7 @@ const searchValue=ref()
     </van-col>
   </van-row> -->
   <!-- 医院列表显示 -->
-  <van-row class="yy-list" v-for="item in mydata.hospitals" justify="space-around" @click="goOrder(item)">
+  <van-row class="yy-list" v-for="item in mydata.hospitals" justify="space-around" @click="goOrder(item)" :key="item.id">
   <van-col  span="6">
     <van-image width="100" height="100" :src="item.avatar_url">
     </van-image>
