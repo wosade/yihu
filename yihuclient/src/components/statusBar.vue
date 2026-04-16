@@ -1,6 +1,6 @@
 <template>
   <div class="od-banner">
-    <img class="od-banner-icon" src="/images/od_bg_icon.png" mode="widthFix" />
+    <img class="od-banner-icon" :src="odBgIcon" mode="widthFix" />
     <div class="od-jd" :class="[`od-jd-${item}`]">
       <div class="od-jd-out">
         <div class="od-jd-in"></div>
@@ -28,6 +28,7 @@
 import { ref, reactive, getCurrentInstance, onMounted } from "vue";
 const { proxy } = getCurrentInstance();
 const { item } = defineProps(["item"]);
+const odBgIcon = `${import.meta.env.BASE_URL}images/od_bg_icon.png`;
 </script>
 
 <style lang="less" scoped>

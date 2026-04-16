@@ -9,6 +9,8 @@ const userInfo = computed(() => {
   return userInfo ? userInfo : {}
 })
 const router=useRouter()
+const asset = (name) => `${import.meta.env.BASE_URL}images/${name}`
+const fallbackAvatar = asset('avatar_def.png')
 // 实现点击订单能跳转页面
 const gorder=(item)=>{
   router.push(`/order?name=${item}`)
@@ -23,6 +25,9 @@ const quit=()=>{
   <div class="container">
     <div class="user">
       <van-image :src="userInfo.avatar" width="100px" class="img" >
+        <template #error>
+          <van-image :src="fallbackAvatar" width="100px" />
+        </template>
       </van-image>
       <div class="text">{{ userInfo.name }}</div>
     </div>
@@ -33,19 +38,19 @@ const quit=()=>{
       </div>
         <div class="buttom">
           <div class="item" @click="gorder(2)">
-            <van-image  width="40" height="40px" src="/images/od_10.png"></van-image>
+            <van-image  width="40" height="40px" :src="asset('od_10.png')"></van-image>
             <div>待支付</div>
           </div>
           <div class="item" @click="gorder(3)">
-            <van-image  width="40" height="40" src="/images/od_20.png"></van-image>
+            <van-image  width="40" height="40" :src="asset('od_20.png')"></van-image>
             <div>待服务</div>
           </div>
           <div class="item" @click="gorder(4)">
-            <van-image  width="40" height="40" src="/images/od_30.png"></van-image>
+            <van-image  width="40" height="40" :src="asset('od_30.png')"></van-image>
             <div>已完成</div>
           </div>
           <div class="item" @click="gorder(5)">
-            <van-image  width="40" height="40" src="/images/od_40.png"></van-image>
+            <van-image  width="40" height="40" :src="asset('od_40.png')"></van-image>
             <div>已取消</div>
           </div>
         </div>
@@ -53,7 +58,7 @@ const quit=()=>{
     <div class="foot">
       <div class="foot1">
         <div class="text1">
-          <van-image width="20" height="20" src="/images/ic_clients.png">
+          <van-image width="20" height="20" :src="asset('ic_clients.png')">
           </van-image>
           服务对象管理
         </div>
@@ -63,7 +68,7 @@ const quit=()=>{
       </div>
       <div class="foot1">
         <div class="text1">
-          <van-image width="20" height="20" src="/images/ic_share.png">
+          <van-image width="20" height="20" :src="asset('ic_share.png')">
           </van-image>
           分享转发
         </div>
