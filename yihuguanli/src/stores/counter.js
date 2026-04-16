@@ -62,7 +62,5 @@ export const useCounterStore = defineStore('counter', () => {
 }, {
   persist: {
     key:'data',
-    // 【关键配置】在这里列出你想要存储的变量名
-    // 没写在这里的（比如 routerList）在页面刷新后会变回初始值
     paths: ['isCollapse', 'routerList']
   }})

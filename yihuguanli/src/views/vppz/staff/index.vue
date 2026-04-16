@@ -225,7 +225,7 @@ const route=useRoute()
 
     </template>
   </el-dialog>
-  <el-dialog v-model="dialogimage" title="陪护士添加   ":before-close="beforeimg" >
+  <el-dialog v-model="dialogimage" title="陪护士添加   " :before-close="beforeimg" >
     <div class="img">
     <div v-for="(item,index) in piclist" @click="selectindx=index" class="imgitem">
       <el-icon  class='elicon' v-if="selectindx===index" ><Check/></el-icon>
