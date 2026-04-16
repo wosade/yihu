@@ -88,17 +88,16 @@ const submitimg=()=>{
 
 const fixAvatarUrl = (url) => {
   if (!url) return ''
-  const protocol = window.location.protocol
   if (url.startsWith('//')) {
-    return url
+    return `http://${url.slice(2)}`
   }
   if (url.startsWith('http://') || url.startsWith('https://')) {
-    return url.replace(/^https?:\/\//, `${protocol}//`)
+    return url.replace(/^https?:\/\//, 'http://')
   }
   if (url.startsWith('/')) {
-    return `${protocol}//159.75.169.224:5500${url}`
+    return `http://159.75.169.224:5500${url}`
   }
-  return `${protocol}//159.75.169.224:5500/${url}`
+  return `http://159.75.169.224:5500/${url}`
 }
 
 // 翻页函数
