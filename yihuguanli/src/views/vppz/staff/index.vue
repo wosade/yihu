@@ -88,16 +88,17 @@ const submitimg=()=>{
 
 const fixAvatarUrl = (url) => {
   if (!url) return ''
-  if (url.startsWith('http://') || url.startsWith('https://')) {
-    return url.replace(/^http:\/\//, 'https://')
-  }
+  const protocol = window.location.protocol
   if (url.startsWith('//')) {
-    return `https:${url}`
+    return url
+  }
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url.replace(/^https?:\/\//, `${protocol}//`)
   }
   if (url.startsWith('/')) {
-    return `https://159.75.169.224:5500${url}`
+    return `${protocol}//159.75.169.224:5500${url}`
   }
-  return `https://159.75.169.224:5500/${url}`
+  return `${protocol}//159.75.169.224:5500/${url}`
 }
 
 // 翻页函数
@@ -175,7 +176,7 @@ const route=useRoute()
     </el-table-column>
     <el-table-column prop="avatar" label="头像">
       <template #default="scope">
-        <el-image :src="scope.row.avatar">
+        <el-image :src="fixAvatarUrl(scope.row.avatar)">
         </el-image>
       </template>
     </el-table-column>
@@ -230,7 +231,7 @@ const route=useRoute()
         <el-button v-if="!form.avatar" type="primary" @click="dialogimage=true">
           点击上传
         </el-button>
-        <el-image v-else :src="form.avatar" @click="dialogimage = true">
+        <el-image v-else :src="fixAvatarUrl(form.avatar)" @click="dialogimage = true">
         </el-image>
       </el-form-item>
     </el-form>
@@ -244,7 +245,7 @@ const route=useRoute()
     <div class="img">
     <div v-for="(item,index) in piclist" @click="selectindx=index" class="imgitem">
       <el-icon  class='elicon' v-if="selectindx===index" ><Check/></el-icon>
-      <img :src="item.url" alt="" :style="{width:'125px'}" class="imginner">
+      <img :src="fixAvatarUrl(item.url)" alt="" :style="{width:'125px'}" class="imginner">
     </div>
   </div>
   <template #footer>
