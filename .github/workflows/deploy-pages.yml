@@ -1,0 +1,62 @@
+name: Deploy GitHub Pages (client + admin)
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      REPO_NAME: ${{ github.event.repository.name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install and build client
+        working-directory: yihuclient
+        env:
+          VITE_PUBLIC_BASE: /${{ env.REPO_NAME }}/
+        run: |
+          npm ci
+          npm run build
+
+      - name: Install and build admin
+        working-directory: yihuguanli
+        env:
+          VITE_PUBLIC_BASE: /${{ env.REPO_NAME }}/admin/
+        run: |
+          npm ci
+          npm run build
+
+      - name: Prepare Pages artifact
+        run: |
+          mkdir -p _site
+          cp -r yihuclient/dist/* _site/
+          mkdir -p _site/admin
+          cp -r yihuguanli/dist/* _site/admin/
+          cp yihuclient/dist/index.html _site/404.html
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

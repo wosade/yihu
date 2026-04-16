@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 import Login from '@/views/login/index.vue'
 import Layout from '@/views/main.vue'
 import Dashboard from '@/views/dashboard/index.vue'
@@ -7,7 +7,9 @@ import Group from '@/views/auth/group/index.vue'
 import Staff from '@/views/vppz/staff/index.vue'
 import Order from '@/views/vppz/order/index.vue'
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: (import.meta.env.PROD && window.location.hostname.includes('github.io'))
+    ? createWebHashHistory(import.meta.env.BASE_URL)
+    : createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',

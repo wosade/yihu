@@ -8,10 +8,11 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 const repoName = process.env.GITHUB_REPOSITORY?.split('/')[1]
 const isGhPagesBuild = process.env.GITHUB_ACTIONS === 'true' && !!repoName
+const configuredBase = process.env.VITE_PUBLIC_BASE
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: isGhPagesBuild ? `/${repoName}/` : '/',
+  base: configuredBase || (isGhPagesBuild ? `/${repoName}/` : '/'),
   plugins: [
     vue(),
     vueDevTools(), 
