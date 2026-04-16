@@ -88,16 +88,13 @@ const submitimg=()=>{
 
 const fixAvatarUrl = (url) => {
   if (!url) return ''
-  if (url.startsWith('//')) {
-    return `http://${url.slice(2)}`
+  if (url.startsWith('//')) url = `http:${url}`
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    url = `http://159.75.169.224:5500/${url}`
   }
-  if (url.startsWith('http://') || url.startsWith('https://')) {
-    return url.replace(/^https?:\/\//, 'http://')
-  }
-  if (url.startsWith('/')) {
-    return `http://159.75.169.224:5500${url}`
-  }
-  return `http://159.75.169.224:5500/${url}`
+  // 用 HTTPS 代理转换 HTTP 图片
+  const encoded = encodeURIComponent(url.replace(/^https?:\/\//, ''))
+  return `https://images.weserv.nl/?url=${encoded}`
 }
 
 // 翻页函数
