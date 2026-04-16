@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router';
 import { useCounterStore } from '@/stores/counter';
 defineOptions({ name: 'LoginView' })
 //让图片打包 生产环境任能显示
-const imgurl = new URL('../../../public/login-head.png', import.meta.url).href
+const imgurl = `${import.meta.env.BASE_URL}login-head.png`
 const usecount = useCounterStore()
 const router = useRouter()
 const type = ref(1)
