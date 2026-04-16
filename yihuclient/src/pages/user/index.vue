@@ -26,7 +26,7 @@ const quit=()=>{
     <div class="user">
       <van-image :src="userInfo.avatar" width="100px" class="img" >
         <template #error>
-          <van-image :src="fallbackAvatar" width="100px" />
+          <van-image :src="fallbackAvatar" width="100px" class="img" />
         </template>
       </van-image>
       <div class="text">{{ userInfo.name }}</div>
