@@ -1,7 +1,7 @@
 import axios from "axios";
 const request = axios.create({
   baseURL: 'https://v3pz.itndedu.com/v3pz',
-  timeout: 2000,
+  timeout: 15000,
   // 请求头唯一标识
   headers: { 'terminal':'h5'}
 });
@@ -12,8 +12,9 @@ request.interceptors.request.use(function (config) {
   const token = localStorage.getItem('token')
   //不需要请求token的地址
   const white = ['/get/code', '/user/authentication', '/login']
+  const requestPath = config.url || ''
   // 预处理token
-  if (token && !white.includes[config.url]) {
+  if (token && !white.includes(requestPath)) {
     config.headers['h-token'] = token
   }
   return config;

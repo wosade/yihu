@@ -10,8 +10,9 @@ request.interceptors.request.use(function (config) {
   const token=localStorage.getItem('token')
   //不需要请求token的地址
   const white = ['/get/code', '/user/authentication','/login']
+  const requestPath = config.url || ''
   // 预处理token
-if(token&&!white.includes[config.url])
+if(token&&!white.includes(requestPath))
   {
     config.headers['x-token']=token}
   return config;
@@ -43,4 +44,3 @@ request.interceptors.response.use(function (response) {
   return Promise.reject(error);
 });
 export default request
-
