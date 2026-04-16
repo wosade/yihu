@@ -85,6 +85,21 @@ const submitimg=()=>{
   form.avatar=piclist.value[selectindx.value].url
   dialogimage.value=false
 }
+
+const fixAvatarUrl = (url) => {
+  if (!url) return ''
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url.replace(/^http:\/\//, 'https://')
+  }
+  if (url.startsWith('//')) {
+    return `https:${url}`
+  }
+  if (url.startsWith('/')) {
+    return `https://159.75.169.224:5500${url}`
+  }
+  return `https://159.75.169.224:5500/${url}`
+}
+
 // 翻页函数
 const handleSizeChange = (val) => {
   listpage.pageSize = val
@@ -160,7 +175,7 @@ const route=useRoute()
     </el-table-column>
     <el-table-column prop="avatar" label="头像">
       <template #default="scope">
-        <el-image :src="scope.row.avatar">
+        <el-image :src="fixAvatarUrl(scope.row.avatar)">
         </el-image>
       </template>
     </el-table-column>
