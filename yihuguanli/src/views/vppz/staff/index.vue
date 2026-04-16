@@ -175,7 +175,7 @@ const route=useRoute()
     </el-table-column>
     <el-table-column prop="avatar" label="头像">
       <template #default="scope">
-        <el-image :src="fixAvatarUrl(scope.row.avatar)">
+        <el-image :src="scope.row.avatar">
         </el-image>
       </template>
     </el-table-column>
